@@ -32,12 +32,16 @@ cell5 <- gather(cell4, Year,
 
 cell6 <- cell5 %>% filter(Year %in% as.character(1990:2018))
 
+
 plot_by_time_cell <- ggplot(cell6, aes(x = Year, y = Per_100_people, group = cell6[[1]])) + 
         geom_line(aes(color = cell6[[1]])) + 
         geom_point(aes(color = cell6[[1]])) + 
-        ylab('User number per 100 people') + 
-        ggtitle('User Number Change of Mobile Phone in G20 Countries') +
-        theme(legend.title = element_blank()) 
+        ylab('Subscriptions per 100 people') + 
+        ggtitle('Cellular Subscriptions in G20 Countries (1990-2018)') +
+        theme(legend.title = element_blank(), axis.text.x=element_blank())  + 
+        facet_wrap(~ cell6[[1]]) + 
+        theme(legend.position = "none") 
+
 
 cell7 <- cell6 %>% filter(Year == '2018')
 names(inter) <- as.vector(as.character(inter[1, ]))
