@@ -1,12 +1,15 @@
 library(tidyverse)
 library(data.table)
 library(stringr)
+library(ggplot2)
 
 # master data frame 
 # cell: utilization of mobile phone 
 # inter: utilization of internet 
+# gdp: udp growth
 cell <- fread('API_IT.CEL.SETS.P2_DS2_en_csv_v2_887311.csv')
 inter <- fread('API_IT.NET.USER.ZS_DS2_en_csv_v2_889089.csv')
+gdp <- fread('API_NY.GDP.MKTP.KD.ZG_DS2_en_csv_v2_936081.csv')
 
 # g20: country codes for g20 (except EU)
 g20 <- c('AUS', 'CAN', 'USA', 'SAU', 'IND', 'RUS', 'ZAF', 'TUR', 'ARG',
@@ -32,7 +35,7 @@ cell5 <- gather(cell4, Year,
 
 cell6 <- cell5 %>% filter(Year %in% as.character(1990:2018))
 
-
+# plotting: cellular subscription in 1990-2018
 plot_by_time_cell <- ggplot(cell6, aes(x = Year, y = Per_100_people, group = cell6[[1]])) + 
         geom_line(aes(color = cell6[[1]])) + 
         geom_point(aes(color = cell6[[1]])) + 
@@ -43,8 +46,8 @@ plot_by_time_cell <- ggplot(cell6, aes(x = Year, y = Per_100_people, group = cel
         theme(legend.position = "none") 
 
 
-cell7 <- cell6 %>% filter(Year == '2018')
-names(inter) <- as.vector(as.character(inter[1, ]))
-inter1 <- inter[-1, ]
-
-
+# data cleaning for gdp
+gdp1 <- gdp[ ,-c('V64', 'V65')]
+g_name <- as.character(gdp1[1, c(1:4, 35:63)])
+gdp2 <- gdp1[-1, c(1:4, 35:63)]
+names(gdp2) <- g_name
