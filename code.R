@@ -100,7 +100,7 @@ plot_by_time_inter <- ggplot(inter3, aes(x = Year, y = Percent, group = Country_
         geom_line(aes(color = Country_Name)) + 
         geom_point(aes(color = Country_Name)) + 
         ylab('% of population') + 
-        ggtitle('Individuals using the Internet in G20 Countries (1990-2017)') +
+        ggtitle('Individuals Using the Internet in G20 Countries (1990-2017)') +
         theme(legend.title = element_blank(), axis.text.x=element_blank())  + 
         facet_wrap(~ Country_Name) + 
         theme(legend.position = "none") 
