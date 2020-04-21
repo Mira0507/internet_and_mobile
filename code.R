@@ -95,7 +95,7 @@ names(inter2) <- c("Country_Name",
 keep1 = c("Country_Name", "Country_Code", "Indicator_Name", "Indicator_Code")
 inter3 <- gather(inter2, Year, Percent, -keep1)
 
-# plotting: internet usage in 1990-2018
+# plotting: internet usage in 1990-2017
 plot_by_time_inter <- ggplot(inter3, aes(x = Year, y = Percent, group = Country_Name)) + 
         geom_line(aes(color = Country_Name)) + 
         geom_point(aes(color = Country_Name)) + 
@@ -104,3 +104,26 @@ plot_by_time_inter <- ggplot(inter3, aes(x = Year, y = Percent, group = Country_
         theme(legend.title = element_blank(), axis.text.x=element_blank())  + 
         facet_wrap(~ Country_Name) + 
         theme(legend.position = "none") 
+
+# table for 2017 internet use
+library(formattable)
+inter4 <- inter3 %>%
+        filter(Year == 2017) %>% 
+        arrange(desc(Percent)) %>% 
+        transmute(Country = Country_Name, Individuals_Using_the_Internet = Percent)
+inter_tab <- formattable(inter4, 
+                         list(area(col = "Individuals_Using_the_Internet") ~ normalize_bar("mistyrose", 0.2)))
+
+
+# table for 2018 cellular subscription
+cell9 <- cell7 %>%
+        filter(Year == 2018) %>% 
+        arrange(desc(Per_100_people)) %>% 
+        transmute(Country = Country_Name, Subscriptions_per_100 = Per_100_people) 
+
+cell_tab <- formattable(cell9, 
+                        list(area(col = "Subscriptions_per_100") ~ normalize_bar("aquamarine", 0.2)))
+                                     
+
+
+
